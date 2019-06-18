@@ -72,6 +72,8 @@ class CommonTestCases:
         output = ""
         for i in range(2):
             output += str(the_process.stdout.readline(), errors='ignore')
+            if "Zla " in output:
+                break
             if ":" in output and i == 0:
                 output = output.replace(":", ': ' + Constants().pages_name + '\n\t')
         return output
