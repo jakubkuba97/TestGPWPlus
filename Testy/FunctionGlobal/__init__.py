@@ -44,6 +44,7 @@ class ForTearDown:
     def close_program(the_process: Popen):
         try:
             the_process.terminate()
+            the_process.wait()
         except AttributeError:
             pass
 
@@ -74,25 +75,3 @@ class CommonTestCases:
             if ":" in output and i == 0:
                 output = output.replace(":", ': ' + Constants().pages_name + '\n\t')
         return output
-
-
-# use only for debug
-if __name__ == '__main__':
-    process = ForSetUp().launch_program()
-    log = ForSetUp().get_first_launch_data(process)
-    log += CommonTestCases().write_correct_sites_name(process)
-
-    assert "nowy plik" in log   # error: "\nBrak informacji o stoworzeniu nowego pliku ze stronami!"
-    """
-    Add below to separate funciton inside the test to save space and for readability
-    """
-    temporary_output = ""
-    while temporary_output == "" or "zaczekac" in temporary_output or temporary_output in "\r\n\t " or "Zaladowano strone" in temporary_output:
-        temporary_output = str(process.stdout.readline(), errors='ignore')
-        log += temporary_output
-    log += str(process.stdout.readline(), errors='ignore')
-    assert ' aby dowiedziec sie wiecej o programie' in log[-50:]   # error: "\nBrak pojawienia sie podstawowych informacji o programie!"
-
-    ForTearDown().delete_pages_file()
-    ForTearDown().close_program(process)
-    print(log)
