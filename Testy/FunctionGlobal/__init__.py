@@ -77,3 +77,28 @@ class CommonTestCases:
             if ":" in output and i == 0:
                 output = output.replace(":", ': ' + Constants().pages_name + '\n\t')
         return output
+
+
+# for debug only
+if __name__ == "__main__":
+    def clean_first_lines(process: Popen) -> str:
+        temporary_output = ""
+        log = ""
+        while temporary_output == "" or "zaczekac" in temporary_output or temporary_output in "\r\n\t " or "Zaladowano strone" in temporary_output:
+            temporary_output = str(process.stdout.readline(), errors='ignore')
+            log += temporary_output
+        if "zaprogramowany aby" in temporary_output:
+            log += str(process.stdout.readline(), errors='ignore')
+        return log
+    process = ForSetUp().launch_program()
+    log = ForSetUp().get_first_launch_data(process)
+    log += CommonTestCases().write_correct_sites_name(process)
+    log += clean_first_lines(process)
+
+    import sys
+    sys.path.append('../')
+    import FunctionInfo
+
+    log += FunctionInfo.FunctionHelpTestCase().launch_help_function(process)
+    print(log)
+    ForTearDown().delete_pages_file()
