@@ -114,14 +114,14 @@ if __name__ == "__main__":
     log += clean_first_lines(process)
     import sys
     sys.path.append('../')
-    import FunctionConsole
+    import FunctionAdd
     """  above are just debug
     """
 
     the_thread_mechanism = CountExecution(5)     # do in setUp
     the_thread_mechanism.start()
     first = True
-    function_test_case = FunctionConsole.ExitFunctionTestCase(process)    # do in setUp
+    function_test_case = FunctionAdd.AddSiteFunctionTestCase(process)    # do in setUp
     while not the_thread_mechanism.finished:
         if first:
             function_test_case.start()
@@ -137,24 +137,24 @@ if __name__ == "__main__":
         raise TimeoutError("Time ran out!")     # only debug!
 
     # new
-    # import FunctionConsole
-    # function_test_case2 = FunctionConsole.BackFunctionTestCase(process)  # do in setUp
-    # the_thread_mechanism = CountExecution(5)  # do in setUp
-    # the_thread_mechanism.start()
-    # first = True
-    # while not the_thread_mechanism.finished:
-    #     if first:
-    #         function_test_case2.start()
-    #         first = False
-    #     if function_test_case2.finished:
-    #         break
-    # log += function_test_case2.this_log
-    # if not function_test_case2.finished:
-    #     # TODO: it means time ran out - assert in here!
-    #     ForTearDown().close_program(process)    # only debug!
-    #     ForTearDown().delete_pages_file()       # only debug!
-    #     print(log)                              # only debug!
-    #     raise TimeoutError("Time ran out!")     # only debug!
+    import FunctionWrongAdd
+    function_test_case2 = FunctionWrongAdd.OutsideSiteTestCase(process)  # do in setUp
+    the_thread_mechanism = CountExecution(5)  # do in setUp
+    the_thread_mechanism.start()
+    first = True
+    while not the_thread_mechanism.finished:
+        if first:
+            function_test_case2.start()
+            first = False
+        if function_test_case2.finished:
+            break
+    log += function_test_case2.this_log
+    if not function_test_case2.finished:
+        # TODO: it means time ran out - assert in here!
+        ForTearDown().close_program(process)    # only debug!
+        ForTearDown().delete_pages_file()       # only debug!
+        print(log)                              # only debug!
+        raise TimeoutError("Time ran out!")     # only debug!
     # new
 
     the_thread_mechanism = None  # do in tearDown
