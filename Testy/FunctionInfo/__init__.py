@@ -1,24 +1,28 @@
 from subprocess import Popen
+from threading import Thread
 
 
-class FunctionHelpTestCase:
-    def __init__(self):
+class FunctionHelpTestCase(Thread):
+    def __init__(self, process: Popen):
+        Thread.__init__(self)
         self.the_data = "/help"
         self.the_data_bytes = b"/help"
+        self.process = process
+        self.this_log = ""
 
-    def launch_help_function(self, process: Popen) -> str:
-        process.stdin.write(self.the_data_bytes + b'\n')
-        process.stdin.flush()
+    def run(self) -> None:
+        self.process.stdin.write(self.the_data_bytes + b'\n')
+        self.process.stdin.flush()
         output = "\t" + self.the_data + "\n"
-        output += str(process.stdout.readline(), errors='ignore')
-        temporary_output = str(process.stdout.readline(), errors='ignore')
+        output += str(self.process.stdout.readline(), errors='ignore')
+        temporary_output = str(self.process.stdout.readline(), errors='ignore')
         output += temporary_output
         while temporary_output != ">>> \r\n" and "Wyjscie" not in temporary_output:
-            temporary_output = str(process.stdout.readline(), errors='ignore')
+            temporary_output = str(self.process.stdout.readline(), errors='ignore')
             output += temporary_output
         if "Wyjscie" in temporary_output:
-            output += str(process.stdout.readline(), errors='ignore')
-        return output
+            output += str(self.process.stdout.readline(), errors='ignore')
+        self.this_log = output
 
 
 class FunctionInfoTestCase:

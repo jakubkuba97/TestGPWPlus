@@ -1,4 +1,5 @@
 from subprocess import Popen
+from threading import Thread
 
 
 class Constants:
@@ -79,6 +80,17 @@ class CommonTestCases:
         return output
 
 
+class CountExecution(Thread):
+    def __init__(self):
+        Thread.__init__(self)
+        self.finished = False
+
+    def run(self) -> None:
+        from time import sleep
+        sleep(5)
+        self.finished = True
+
+
 # for debug only
 if __name__ == "__main__":
     def clean_first_lines(process: Popen) -> str:
@@ -99,6 +111,22 @@ if __name__ == "__main__":
     sys.path.append('../')
     import FunctionInfo
 
-    log += FunctionInfo.FunctionHelpTestCase().launch_help_function(process)
+    the_thread_mechanism = CountExecution()
+    the_thread_mechanism.start()
+    first = True
+    function_help_test_case = FunctionInfo.FunctionHelpTestCase(process)
+    while not the_thread_mechanism.finished:
+        if first:
+            function_help_test_case.start()
+            first = False
+        if function_help_test_case.this_log != "":
+            break
+    log += function_help_test_case.this_log
+    if function_help_test_case.this_log == "":
+        # TODO: it means time ran out - assert in here!
+        ForTearDown().delete_pages_file()
+        # TODO: kill all threads here
+        raise TimeoutError("Time ran out!")
     print(log)
+    # TODO: kill all threads here
     ForTearDown().delete_pages_file()
