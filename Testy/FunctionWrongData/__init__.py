@@ -28,6 +28,7 @@ class DataWrongForFileSavingTestCase:
 class MeaninglessCharsTestCase(Thread):
     def __init__(self, process: Popen):
         Thread.__init__(self)
+        self.daemon = True
         self.the_data = "asdf"
         self.the_data_bytes = b"asdf"
         self.process = process
@@ -44,6 +45,7 @@ class MeaninglessCharsTestCase(Thread):
 class WrongCommandTestCase(Thread):
     def __init__(self, process: Popen):
         Thread.__init__(self)
+        self.daemon = True
         self.the_data = "/obliviate"
         self.the_data_bytes = b"/obliviate"
         self.process = process

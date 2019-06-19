@@ -83,6 +83,7 @@ class CommonTestCases:
 class CountExecution(Thread):
     def __init__(self):
         Thread.__init__(self)
+        self.daemon = True
         self.finished = False
 
     def run(self) -> None:
@@ -125,8 +126,6 @@ if __name__ == "__main__":
     if function_help_test_case.this_log == "":
         # TODO: it means time ran out - assert in here!
         ForTearDown().delete_pages_file()
-        # TODO: kill all threads here
         raise TimeoutError("Time ran out!")
     print(log)
-    # TODO: kill all threads here
     ForTearDown().delete_pages_file()

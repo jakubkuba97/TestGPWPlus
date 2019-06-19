@@ -5,6 +5,7 @@ from threading import Thread
 class FunctionHelpTestCase(Thread):
     def __init__(self, process: Popen):
         Thread.__init__(self)
+        self.daemon = True
         self.the_data = "/help"
         self.the_data_bytes = b"/help"
         self.process = process
