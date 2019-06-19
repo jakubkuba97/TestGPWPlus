@@ -120,10 +120,10 @@ if __name__ == "__main__":
         if first:
             function_help_test_case.start()
             first = False
-        if function_help_test_case.this_log != "":
+        if function_help_test_case.finished:
             break
     log += function_help_test_case.this_log
-    if function_help_test_case.this_log == "":
+    if not function_help_test_case.finished:
         # TODO: it means time ran out - assert in here!
         ForTearDown().delete_pages_file()
         raise TimeoutError("Time ran out!")

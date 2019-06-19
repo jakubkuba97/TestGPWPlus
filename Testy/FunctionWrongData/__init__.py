@@ -2,14 +2,21 @@ from subprocess import Popen
 from threading import Thread
 
 
-class BlankDataWrittenTestCase:
-    @staticmethod
-    def write_blank_data(process: Popen) -> str:
-        process.stdin.write(b'\n')
-        process.stdin.flush()
-        output = "\n"
-        output += str(process.stdout.readline(), errors='ignore')
-        return output
+class BlankDataWrittenTestCase(Thread):
+    def __init__(self, process: Popen):
+        Thread.__init__(self)
+        self.daemon = True
+        self.process = process
+        self.this_log = ""
+        self.finished = False
+
+    def run(self) -> None:
+        self.process.stdin.write(b'\n')
+        self.process.stdin.flush()
+        self.this_log = "\n"
+        output = str(self.process.stdout.readline(), errors='ignore')
+        self.this_log += output
+        self.finished = True
 
 
 class DataWrongForFileSavingTestCase:
@@ -33,13 +40,15 @@ class MeaninglessCharsTestCase(Thread):
         self.the_data_bytes = b"asdf"
         self.process = process
         self.this_log = ""
+        self.finished = False
 
     def run(self) -> None:
         self.process.stdin.write(self.the_data_bytes + b'\n')
         self.process.stdin.flush()
-        output = self.the_data + "\n"
-        output += str(self.process.stdout.readline(), errors='ignore')
+        self.this_log = self.the_data + "\n"
+        output = str(self.process.stdout.readline(), errors='ignore')
         self.this_log = output
+        self.finished = True
 
 
 class WrongCommandTestCase(Thread):
@@ -50,10 +59,12 @@ class WrongCommandTestCase(Thread):
         self.the_data_bytes = b"/obliviate"
         self.process = process
         self.this_log = ""
+        self.finished = False
 
     def run(self) -> None:
         self.process.stdin.write(self.the_data_bytes + b'\n')
         self.process.stdin.flush()
-        output = self.the_data + "\n"
-        output += str(self.process.stdout.readline(), errors='ignore')
+        self.this_log = self.the_data + "\n"
+        output = str(self.process.stdout.readline(), errors='ignore')
         self.this_log = output
+        self.finished = True
