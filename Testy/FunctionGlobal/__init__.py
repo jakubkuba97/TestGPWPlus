@@ -7,6 +7,10 @@ class Constants:
         self.pages_name = "Strony"
         self.pages_bytes_name = b"Strony"
 
+        self.correct_site_1 = "https://www.gpw.pl/spolka?isin=PL11BTS00015"
+        self.correct_site_2 = "https://www.gpw.pl/spolka?isin=PLALIOR00045"
+        self.correct_site_3 = "https://www.gpw.pl/spolka?isin=PLBIG0000016"
+
     @staticmethod
     def get_path_to_program() -> str:
         from os import path
@@ -38,6 +42,39 @@ class ForSetUp:
         if "znaleziono pliku ze stronami" not in output:
             raise ValueError("This is not the first launch! Use different function!")
         return output
+
+    @staticmethod
+    def clean_first_lines(process: Popen) -> str:
+        temporary_output = ""
+        log = ""
+        while temporary_output == "" or "zaczekac" in temporary_output or temporary_output in "\r\n\t " or "Zaladowano strone" in temporary_output:
+            temporary_output = str(process.stdout.readline(), errors='ignore')
+            log += temporary_output
+        if "zaprogramowany aby" in temporary_output:
+            log += str(process.stdout.readline(), errors='ignore')
+        return log
+
+    def correct_main_menu_entry(self) -> Popen:
+        ForTearDown().delete_pages_file()
+        the_process = self.launch_program()
+        trash_log = self.get_first_launch_data(the_process)
+        trash_log += CommonTestCases().write_correct_sites_name(the_process)
+        trash_log += self.clean_first_lines(the_process)
+        return the_process
+
+    def correct_main_menu_3_sites_saved(self) -> Popen:
+        the_process = self.correct_main_menu_entry()
+        with (Constants().get_path_to_program() + "\\" + Constants().pages_name + ".txt", 'a') as file_to_write:
+            file_to_write.write(Constants().correct_site_1 + "\n")
+            file_to_write.write(Constants().correct_site_2 + "\n")
+            file_to_write.write(Constants().correct_site_3 + "\n")
+        return the_process
+
+    def correct_main_menu_1_site_saved(self) -> Popen:
+        the_process = self.correct_main_menu_entry()
+        with (Constants().get_path_to_program() + "\\" + Constants().pages_name + ".txt", 'a') as file_to_write:
+            file_to_write.write(Constants().correct_site_1 + "\n")
+        return the_process
 
 
 class ForTearDown:
