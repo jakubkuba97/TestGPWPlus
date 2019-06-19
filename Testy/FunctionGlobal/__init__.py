@@ -55,7 +55,7 @@ class ForTearDown:
             from os import remove
             path_to_program = Constants().get_path_to_program()
             remove(path_to_program + "\\" + Constants().pages_name + ".txt")
-        except FileNotFoundError:
+        except (FileNotFoundError, PermissionError):
             pass
 
     @staticmethod
@@ -81,14 +81,15 @@ class CommonTestCases:
 
 
 class CountExecution(Thread):
-    def __init__(self):
+    def __init__(self, timer):
         Thread.__init__(self)
         self.daemon = True
         self.finished = False
+        self.timer = timer
 
     def run(self) -> None:
         from time import sleep
-        sleep(5)
+        sleep(self.timer)
         self.finished = True
 
 
@@ -96,6 +97,8 @@ class CountExecution(Thread):
 if __name__ == "__main__":
     """  below are just debug
     """
+    ForTearDown().delete_pages_file()
+
     def clean_first_lines(process: Popen) -> str:
         temporary_output = ""
         log = ""
@@ -111,29 +114,52 @@ if __name__ == "__main__":
     log += clean_first_lines(process)
     import sys
     sys.path.append('../')
-    import FunctionInfo
+    import FunctionConsole
     """  above are just debug
     """
 
-    the_thread_mechanism = CountExecution()     # do in setUp
+    the_thread_mechanism = CountExecution(5)     # do in setUp
     the_thread_mechanism.start()
     first = True
-    function_info_test_case = FunctionInfo.FunctionInfoTestCase(process)    # do in setUp
+    function_test_case = FunctionConsole.ExitFunctionTestCase(process)    # do in setUp
     while not the_thread_mechanism.finished:
         if first:
-            function_info_test_case.start()
+            function_test_case.start()
             first = False
-        if function_info_test_case.finished:
+        if function_test_case.finished:
             break
-    log += function_info_test_case.this_log
-    if not function_info_test_case.finished:
+    log += function_test_case.this_log
+    if not function_test_case.finished:
         # TODO: it means time ran out - assert in here!
+        ForTearDown().close_program(process)    # only debug!
         ForTearDown().delete_pages_file()       # only debug!
         print(log)                              # only debug!
         raise TimeoutError("Time ran out!")     # only debug!
-    the_thread_mechanism = None         # do in tearDown
+
+    # new
+    # import FunctionConsole
+    # function_test_case2 = FunctionConsole.BackFunctionTestCase(process)  # do in setUp
+    # the_thread_mechanism = CountExecution(5)  # do in setUp
+    # the_thread_mechanism.start()
+    # first = True
+    # while not the_thread_mechanism.finished:
+    #     if first:
+    #         function_test_case2.start()
+    #         first = False
+    #     if function_test_case2.finished:
+    #         break
+    # log += function_test_case2.this_log
+    # if not function_test_case2.finished:
+    #     # TODO: it means time ran out - assert in here!
+    #     ForTearDown().close_program(process)    # only debug!
+    #     ForTearDown().delete_pages_file()       # only debug!
+    #     print(log)                              # only debug!
+    #     raise TimeoutError("Time ran out!")     # only debug!
+    # new
+
+    the_thread_mechanism = None  # do in tearDown
     function_help_test_case = None      # do in tearDown
 
     print(log)          # just here for debug
-    ForTearDown().delete_pages_file()
     ForTearDown().close_program(process)
+    ForTearDown().delete_pages_file()
