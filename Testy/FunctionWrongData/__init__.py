@@ -13,9 +13,8 @@ class BlankDataWrittenTestCase(Thread):
     def run(self) -> None:
         self.process.stdin.write(b'\n')
         self.process.stdin.flush()
-        self.this_log = "\n"
-        output = str(self.process.stdout.readline(), errors='ignore')
-        self.this_log += output
+        self.this_log = r"\n" + "\n"
+        self.this_log += str(self.process.stdout.readline(), errors='ignore')
         self.finished = True
 
 
@@ -46,8 +45,7 @@ class MeaninglessCharsTestCase(Thread):
         self.process.stdin.write(self.the_data_bytes + b'\n')
         self.process.stdin.flush()
         self.this_log = self.the_data + "\n"
-        output = str(self.process.stdout.readline(), errors='ignore')
-        self.this_log = output
+        self.this_log += str(self.process.stdout.readline(), errors='ignore')
         self.finished = True
 
 
@@ -65,6 +63,5 @@ class WrongCommandTestCase(Thread):
         self.process.stdin.write(self.the_data_bytes + b'\n')
         self.process.stdin.flush()
         self.this_log = self.the_data + "\n"
-        output = str(self.process.stdout.readline(), errors='ignore')
-        self.this_log = output
+        self.this_log += str(self.process.stdout.readline(), errors='ignore')
         self.finished = True

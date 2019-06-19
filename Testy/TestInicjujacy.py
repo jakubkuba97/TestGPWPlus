@@ -8,12 +8,12 @@ class TestInicjujacyTestCases(unittest.TestCase):
         if not warnoptions:
             import warnings
             warnings.simplefilter("ignore", ResourceWarning)
-        import FunctionGlobal   # unknown reason for showing error - IDE bug # TODO: try to find solution
+        import FunctionGlobal       # unknown reason for showing error - IDE bug # TODO: try to find solution
 
         self.function_global = FunctionGlobal
         self.test_id = "TS001"
         self.function_global.ForTearDown().delete_pages_file()
-        self.the_process = self.function_global.ForSetUp().launch_program()
+        self.the_process = Popen(self.function_global.ForSetUp().launch_program())
         self.the_log = self.function_global.ForSetUp().get_first_launch_data(self.the_process)
 
     @staticmethod
@@ -32,12 +32,12 @@ class TestInicjujacyTestCases(unittest.TestCase):
         self.the_log += temporary_log
         if "nowy plik" not in temporary_log:
             self.function_global.ForTearDown().save_log_to_file(self.test_id, self.the_log)
-            self.assertIn("nowy plik", temporary_log, "Brak informacji o stoworzeniu nowego pliku ze stronami!")
+            self.assertIn("nowy plik", temporary_log, self.test_id + ". Brak informacji o stoworzeniu nowego pliku ze stronami!")
         temporary_log = self.clean_first_lines(self.the_process)
         self.the_log += temporary_log
         if " aby dowiedziec sie wiecej o programie" not in temporary_log:
             self.function_global.ForTearDown().save_log_to_file(self.test_id, self.the_log)
-            self.assertIn(" aby dowiedziec sie wiecej o programie", temporary_log, "Brak pojawienia sie podstawowych informacji o programie!")
+            self.assertIn(" aby dowiedziec sie wiecej o programie", temporary_log, self.test_id + ". Brak pojawienia sie podstawowych informacji o programie!")
 
     def tearDown(self) -> None:
         self.function_global.ForTearDown().close_program(self.the_process)
