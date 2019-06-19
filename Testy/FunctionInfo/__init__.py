@@ -27,15 +27,28 @@ class FunctionHelpTestCase(Thread):
         self.finished = True
 
 
-class FunctionInfoTestCase:
-    def __init__(self):
+class FunctionInfoTestCase(Thread):
+    def __init__(self, process: Popen):
+        Thread.__init__(self)
+        self.daemon = True
         self.the_data = "/info"
         self.the_data_bytes = b"/info"
+        self.process = process
+        self.this_log = ""
+        self.finished = False
 
-    def launch_info_function(self, process: Popen) -> str:
-        # TODO: remember to fix this function!
-        process.stdin.write(self.the_data_bytes + b'\n')
-        process.stdin.flush()
-        output = self.the_data + "\n"
-        output += str(process.stdout.readline(), errors='ignore')
-        return output
+    def run(self) -> None:
+        self.process.stdin.write(self.the_data_bytes + b'\n')
+        self.process.stdin.flush()
+        self.this_log = self.the_data + "\n"
+        output = str(self.process.stdout.readline(), errors='ignore')
+        self.this_log += output
+        if ">>> \r\n" in self.this_log:
+            output = str(self.process.stdout.readline(), errors='ignore')
+            self.this_log += output
+        if "Jestem programem " in output:
+            while "Program dziala w pelni " not in output:
+                output = str(self.process.stdout.readline(), errors='ignore')
+                self.this_log += output
+        self.this_log += str(self.process.stdout.readline(), errors='ignore')
+        self.finished = True

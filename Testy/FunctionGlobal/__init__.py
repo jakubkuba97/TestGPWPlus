@@ -94,6 +94,8 @@ class CountExecution(Thread):
 
 # for debug only
 if __name__ == "__main__":
+    """  below are just debug
+    """
     def clean_first_lines(process: Popen) -> str:
         temporary_output = ""
         log = ""
@@ -107,25 +109,31 @@ if __name__ == "__main__":
     log = ForSetUp().get_first_launch_data(process)
     log += CommonTestCases().write_correct_sites_name(process)
     log += clean_first_lines(process)
-
     import sys
     sys.path.append('../')
     import FunctionInfo
+    """  above are just debug
+    """
 
-    the_thread_mechanism = CountExecution()
+    the_thread_mechanism = CountExecution()     # do in setUp
     the_thread_mechanism.start()
     first = True
-    function_help_test_case = FunctionInfo.FunctionHelpTestCase(process)
+    function_info_test_case = FunctionInfo.FunctionInfoTestCase(process)    # do in setUp
     while not the_thread_mechanism.finished:
         if first:
-            function_help_test_case.start()
+            function_info_test_case.start()
             first = False
-        if function_help_test_case.finished:
+        if function_info_test_case.finished:
             break
-    log += function_help_test_case.this_log
-    if not function_help_test_case.finished:
+    log += function_info_test_case.this_log
+    if not function_info_test_case.finished:
         # TODO: it means time ran out - assert in here!
-        ForTearDown().delete_pages_file()
-        raise TimeoutError("Time ran out!")
-    print(log)
+        ForTearDown().delete_pages_file()       # only debug!
+        print(log)                              # only debug!
+        raise TimeoutError("Time ran out!")     # only debug!
+    the_thread_mechanism = None         # do in tearDown
+    function_help_test_case = None      # do in tearDown
+
+    print(log)          # just here for debug
     ForTearDown().delete_pages_file()
+    ForTearDown().close_program(process)
