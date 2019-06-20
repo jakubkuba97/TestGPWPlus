@@ -64,16 +64,28 @@ class ForSetUp:
 
     def correct_main_menu_3_sites_saved(self) -> Popen:
         the_process = self.correct_main_menu_entry()
-        with (Constants().get_path_to_program() + "\\" + Constants().pages_name + ".txt", 'a') as file_to_write:
-            file_to_write.write(Constants().correct_site_1 + "\n")
-            file_to_write.write(Constants().correct_site_2 + "\n")
-            file_to_write.write(Constants().correct_site_3 + "\n")
+        ForTearDown().close_program(the_process)
+        file_to_write = open(Constants().get_path_to_program() + "\\" + Constants().pages_name + ".txt", 'a')
+        file_to_write.write(Constants().correct_site_1 + "\n")
+        file_to_write.write(Constants().correct_site_2 + "\n")
+        file_to_write.write(Constants().correct_site_3 + "\n")
+        file_to_write.close()
+        the_process = self.launch_program()
+        trash_log = str(the_process.stdout.readline(), errors='ignore')
+        trash_log += str(the_process.stdout.readline(), errors='ignore')
+        trash_log += self.clean_first_lines(the_process)
         return the_process
 
     def correct_main_menu_1_site_saved(self) -> Popen:
         the_process = self.correct_main_menu_entry()
-        with (Constants().get_path_to_program() + "\\" + Constants().pages_name + ".txt", 'a') as file_to_write:
-            file_to_write.write(Constants().correct_site_1 + "\n")
+        ForTearDown().close_program(the_process)
+        file_to_write = open(Constants().get_path_to_program() + "\\" + Constants().pages_name + ".txt", 'a')
+        file_to_write.write(Constants().correct_site_1 + "\n")
+        file_to_write.close()
+        the_process = self.launch_program()
+        trash_log = str(the_process.stdout.readline(), errors='ignore')
+        trash_log += str(the_process.stdout.readline(), errors='ignore')
+        trash_log += self.clean_first_lines(the_process)
         return the_process
 
 
@@ -128,75 +140,3 @@ class CountExecution(Thread):
         from time import sleep
         sleep(self.timer)
         self.finished = True
-
-
-# for debug only
-if __name__ == "__main__":
-    """  below are just debug
-    """
-    ForTearDown().delete_pages_file()
-
-    def clean_first_lines(process: Popen) -> str:
-        temporary_output = ""
-        log = ""
-        while temporary_output == "" or "zaczekac" in temporary_output or temporary_output in "\r\n\t " or "Zaladowano strone" in temporary_output:
-            temporary_output = str(process.stdout.readline(), errors='ignore')
-            log += temporary_output
-        if "zaprogramowany aby" in temporary_output:
-            log += str(process.stdout.readline(), errors='ignore')
-        return log
-    process = ForSetUp().launch_program()
-    log = ForSetUp().get_first_launch_data(process)
-    log += CommonTestCases().write_correct_sites_name(process)
-    log += clean_first_lines(process)
-    import sys
-    sys.path.append('../')
-    import FunctionAdd
-    """  above are just debug
-    """
-
-    the_thread_mechanism = CountExecution(5)     # do in setUp
-    the_thread_mechanism.start()
-    first = True
-    function_test_case = FunctionAdd.AddSiteFunctionTestCase(process)    # do in setUp
-    while not the_thread_mechanism.finished:
-        if first:
-            function_test_case.start()
-            first = False
-        if function_test_case.finished:
-            break
-    log += function_test_case.this_log
-    if not function_test_case.finished:
-        # TODO: it means time ran out - assert in here!
-        ForTearDown().close_program(process)    # only debug!
-        ForTearDown().delete_pages_file()       # only debug!
-        print(log)                              # only debug!
-        raise TimeoutError("Time ran out!")     # only debug!
-
-    # new
-    import FunctionWrongAdd
-    function_test_case2 = FunctionWrongAdd.OutsideSiteTestCase(process)  # do in setUp
-    the_thread_mechanism = CountExecution(5)  # do in setUp
-    the_thread_mechanism.start()
-    first = True
-    while not the_thread_mechanism.finished:
-        if first:
-            function_test_case2.start()
-            first = False
-        if function_test_case2.finished:
-            break
-    log += function_test_case2.this_log
-    if not function_test_case2.finished:
-        # TODO: it means time ran out - assert in here!
-        ForTearDown().close_program(process)    # only debug!
-        ForTearDown().delete_pages_file()       # only debug!
-        print(log)                              # only debug!
-        raise TimeoutError("Time ran out!")     # only debug!
-    # new
-
-    the_thread_mechanism = None  # do in tearDown
-    function_help_test_case = None      # do in tearDown
-
-    print(log)          # just here for debug
-    ForTearDown().close_program(process)
-    ForTearDown().delete_pages_file()
