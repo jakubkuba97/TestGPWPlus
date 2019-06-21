@@ -3,10 +3,6 @@ from threading import Thread
 
 
 class ShowSitesFunctionTestCase(Thread):
-    """
-    This Test Case is expected to time out, since it is impossible
-    to predict how many lines it will need to read!
-    """
     def __init__(self, process: Popen):
         Thread.__init__(self)
         self.daemon = True
@@ -14,7 +10,7 @@ class ShowSitesFunctionTestCase(Thread):
         self.the_data_bytes = b"/sites"
         self.process = process
         self.this_log = ""
-        self.finished = False       # leave for consistency
+        self.finished = False
 
     def run(self) -> None:
         self.process.stdin.write(self.the_data_bytes + b'\n')
@@ -23,6 +19,7 @@ class ShowSitesFunctionTestCase(Thread):
         output = str(self.process.stdout.readline(), errors='ignore')
         self.this_log += output
         if "Nazwa pliku" in output:
-            while True:
-                self.this_log += str(self.process.stdout.readline(), errors='ignore')
-        self.finished = True        # set to true only if unexpected input request is received
+            while output != "\r\n":
+                output = str(self.process.stdout.readline(), errors='ignore')
+                self.this_log += output
+        self.finished = True
