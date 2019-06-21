@@ -9,9 +9,9 @@ class TestZlychDanychMenuFunkcjiTestCases(unittest.TestCase):
         if not warnoptions:
             import warnings
             warnings.simplefilter("ignore", ResourceWarning)
-        import FunctionGlobal                   # unknown reason for showing error - IDE bug # TODO: try to find solution
-        import FunctionWrongData                # unknown reason for showing error - IDE bug
-        import FunctionAdd                      # unknown reason for showing error - IDE bug
+        import FunctionGlobal
+        import FunctionWrongData
+        import FunctionAdd
         self.function_global = FunctionGlobal
 
         self.test_id = "TS004"

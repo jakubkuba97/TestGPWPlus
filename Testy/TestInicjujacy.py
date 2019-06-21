@@ -8,12 +8,12 @@ class TestInicjujacyTestCases(unittest.TestCase):
         if not warnoptions:
             import warnings
             warnings.simplefilter("ignore", ResourceWarning)
-        import FunctionGlobal       # unknown reason for showing error - IDE bug # TODO: try to find solution
+        import FunctionGlobal
 
         self.function_global = FunctionGlobal
         self.test_id = "TS001"
         self.function_global.ForTearDown().delete_pages_file()
-        self.the_process = Popen(self.function_global.ForSetUp().launch_program())
+        self.the_process = self.function_global.ForSetUp().launch_program()
         self.the_log = self.function_global.ForSetUp().get_first_launch_data(self.the_process)
 
     def test_inicjujacy(self):

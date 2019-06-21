@@ -33,7 +33,7 @@ class WriteCorrectSiteTestCase(Thread):
         self.daemon = True
         import sys
         sys.path.append('../')
-        import FunctionGlobal           # unknown reason for showing error - IDE bug # TODO: try to find solution
+        import FunctionGlobal
         function_global = FunctionGlobal
         self.the_data = function_global.Constants().correct_site_1
         self.the_data_bytes = self.the_data.encode('utf-8')
