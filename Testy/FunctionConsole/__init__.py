@@ -64,4 +64,4 @@ class ExitFunctionTestCase(Thread):
         self.this_log += output
         if output == '>>> XXX ':
             self.this_log += str("\n<- exited ->\n")
-            self.finished = True
+        self.finished = True
