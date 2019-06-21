@@ -22,7 +22,7 @@ class TestPierwszegoUruchomieniaTestCases(unittest.TestCase):
         self.blank_data_written_test_case = FunctionWrongData.BlankDataWrittenTestCase(self.the_process)
         self.data_wrong_for_file_saving_test_case = FunctionWrongData.DataWrongForFileSavingTestCase()
 
-    def test_pierwszego_uruchomienia(self):
+    def test_pierwszego_uruchomienia_1_czesc(self):
         self.countdown_function_1.start()
         first = True
         while not self.countdown_function_1.finished:
@@ -37,6 +37,7 @@ class TestPierwszegoUruchomieniaTestCases(unittest.TestCase):
             self.function_global.ForTearDown().save_log_to_file(self.test_id, self.the_log)
             self.assertTrue(self.blank_data_written_test_case.finished, self.test_id + ". Brak prośby o ponowienie przy pustym wejsciu!")
 
+    def test_pierwszego_uruchomienia_2_czesc(self):
         temporary_output = self.data_wrong_for_file_saving_test_case.write_wrong_file_saving_data(self.the_process)
         self.the_log += temporary_output
         if "zla" not in temporary_output:

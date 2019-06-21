@@ -24,7 +24,7 @@ class TestZlychDanychMenuGlowneTestCases(unittest.TestCase):
         self.meaningless_chars_test_case = FunctionWrongData.MeaninglessCharsTestCase(self.the_process)
         self.wrong_command_test_case = FunctionWrongData.WrongCommandTestCase(self.the_process)
 
-    def test_zlych_danych_menu_glowne_1_czesc(self):            # need to fragment this test script because of queued output reads - expected timeout of functions
+    def test_zlych_danych_menu_glowne_1_czesc(self):
         self.countdown_function_1.start()
         first = True
         while not self.countdown_function_1.finished:
