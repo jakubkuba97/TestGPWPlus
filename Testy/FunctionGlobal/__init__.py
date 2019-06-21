@@ -110,8 +110,15 @@ class ForTearDown:
     @staticmethod
     def save_log_to_file(test_scenario_id: str, log_output: str):
         path_to_temporary_logs = Constants().get_path_to_temporary_logs()
-        with open(path_to_temporary_logs + "\\" + test_scenario_id + ".txt", 'w') as new_file:
-            new_file.write(log_output)
+        try:
+            with open(path_to_temporary_logs + "\\" + test_scenario_id + ".txt", 'a') as new_file:
+                new_file.write("\n\t" + ("-" * 30) + "\n")
+                new_file.write(log_output)
+                new_file.write("\n")
+        except FileNotFoundError:
+            with open(path_to_temporary_logs + "\\" + test_scenario_id + ".txt", 'w') as new_file:
+                pass
+            ForTearDown().save_log_to_file(test_scenario_id, log_output)
 
 
 class CommonTestCases:
@@ -127,6 +134,31 @@ class CommonTestCases:
             if ":" in output and i == 0:
                 output = output.replace(":", ': ' + Constants().pages_name + '\n\t')
         return output
+
+    @staticmethod
+    def clear_remaining_input(process: Popen) -> str:
+        countdown_function = CountExecution(1)
+        read_line_function = TryToReadLine(process)
+        output = ""
+        countdown_function.start()
+        read_line_function.start()
+        while not countdown_function.finished:
+            if countdown_function.finished:
+                break
+        output += read_line_function.output
+        return output
+
+
+class TryToReadLine(Thread):
+    def __init__(self, process: Popen):
+        Thread.__init__(self)
+        self.daemon = True
+        self.output = ""
+        self.process = process
+
+    def run(self) -> None:
+        while True:
+            self.output += str(self.process.stdout.readline(), errors='ignore')
 
 
 class CountExecution(Thread):

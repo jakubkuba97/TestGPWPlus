@@ -17,9 +17,9 @@ class TestZlychDanychMenuGlowneTestCases(unittest.TestCase):
         self.the_process = self.function_global.ForSetUp().correct_main_menu_entry()
         self.the_log = ""
 
-        self.countdown_function_1 = FunctionGlobal.CountExecution(3)
-        self.countdown_function_2 = FunctionGlobal.CountExecution(3)
-        self.countdown_function_3 = FunctionGlobal.CountExecution(4)
+        self.countdown_function_1 = FunctionGlobal.CountExecution(2)
+        self.countdown_function_2 = FunctionGlobal.CountExecution(2)
+        self.countdown_function_3 = FunctionGlobal.CountExecution(3)
         self.blank_data_written_test_case = FunctionWrongData.BlankDataWrittenTestCase(self.the_process)
         self.meaningless_chars_test_case = FunctionWrongData.MeaninglessCharsTestCase(self.the_process)
         self.wrong_command_test_case = FunctionWrongData.WrongCommandTestCase(self.the_process)
@@ -69,6 +69,7 @@ class TestZlychDanychMenuGlowneTestCases(unittest.TestCase):
             self.function_global.ForTearDown().save_log_to_file(self.test_id, self.the_log)
             self.assertTrue(self.wrong_command_test_case.finished, self.test_id + ". Nieoczekiwana prosba o wpisanie danych.")
         elif "Wpisano niepoprawna" not in self.wrong_command_test_case.this_log:
+            self.the_log += self.function_global.CommonTestCases().clear_remaining_input(self.the_process)
             self.function_global.ForTearDown().save_log_to_file(self.test_id, self.the_log)
             self.assertIn("Wpisano niepoprawna", self.wrong_command_test_case.this_log, self.test_id + ". Brak informacji o niepoprawnej komendzie.")
 

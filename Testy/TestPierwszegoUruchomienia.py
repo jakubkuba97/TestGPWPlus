@@ -33,7 +33,11 @@ class TestPierwszegoUruchomieniaTestCases(unittest.TestCase):
                 break
         Thread.join(self=self.countdown_function_1)
         self.the_log += self.blank_data_written_test_case.this_log
-        if (not self.blank_data_written_test_case.finished) or ("zla" not in self.blank_data_written_test_case.this_log.lower()):
+        if not self.blank_data_written_test_case.finished:
+            self.function_global.ForTearDown().save_log_to_file(self.test_id, self.the_log)
+            self.assertTrue(self.blank_data_written_test_case.finished, self.test_id + ". Brak prośby o ponowienie przy pustym wejsciu!")
+        if "zla" not in self.blank_data_written_test_case.this_log.lower():
+            self.the_log += self.function_global.CommonTestCases().clear_remaining_input(self.the_process)
             self.function_global.ForTearDown().save_log_to_file(self.test_id, self.the_log)
             self.assertTrue(self.blank_data_written_test_case.finished, self.test_id + ". Brak prośby o ponowienie przy pustym wejsciu!")
 
@@ -41,6 +45,7 @@ class TestPierwszegoUruchomieniaTestCases(unittest.TestCase):
         temporary_output = self.data_wrong_for_file_saving_test_case.write_wrong_file_saving_data(self.the_process)
         self.the_log += temporary_output
         if "zla" not in temporary_output:
+            self.the_log += self.function_global.CommonTestCases().clear_remaining_input(self.the_process)
             self.function_global.ForTearDown().save_log_to_file(self.test_id, self.the_log)
             self.assertIn("zla", temporary_output, self.test_id + ". Brak prośby o ponowienie przy blednych danych do zapisu pliku!")
 

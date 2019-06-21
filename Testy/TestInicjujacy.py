@@ -20,11 +20,13 @@ class TestInicjujacyTestCases(unittest.TestCase):
         temporary_log = self.function_global.CommonTestCases().write_correct_sites_name(self.the_process)
         self.the_log += temporary_log
         if "nowy plik" not in temporary_log:
+            self.the_log += self.function_global.CommonTestCases().clear_remaining_input(self.the_process)
             self.function_global.ForTearDown().save_log_to_file(self.test_id, self.the_log)
             self.assertIn("nowy plik", temporary_log, self.test_id + ". Brak informacji o stoworzeniu nowego pliku ze stronami!")
         temporary_log = self.function_global.ForSetUp().clean_first_lines(self.the_process)
         self.the_log += temporary_log
         if " aby dowiedziec sie wiecej o programie" not in temporary_log:
+            self.the_log += self.function_global.CommonTestCases().clear_remaining_input(self.the_process)
             self.function_global.ForTearDown().save_log_to_file(self.test_id, self.the_log)
             self.assertIn(" aby dowiedziec sie wiecej o programie", temporary_log, self.test_id + ". Brak pojawienia sie podstawowych informacji o programie!")
 
