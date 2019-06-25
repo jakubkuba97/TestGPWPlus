@@ -49,15 +49,6 @@ class RemoveOneSiteFunctionTestCase(Thread):
         self.this_log = "\t" + self.the_data + "\n"
         self.this_log += str(self.process.stdout.readline(), errors='ignore')
         self.this_log += str(self.process.stdout.readline(), errors='ignore')
-        # output = str(self.process.stdout.readline(), errors='ignore')
-        # self.this_log += output
-        # if "Brak spolek" in output:
-        #     self.this_log += str(self.process.stdout.readline(), errors='ignore')
-        # elif ">>> " in output:
-        #     if "Usunieto strone" in output:
-        #         self.this_log += str(self.process.stdout.readline(), errors='ignore')
-        #     elif "Nie podano poprawnej" in output:
-        #         self.this_log += str(self.process.stdout.readline(), errors='ignore')
         self.finished = True
 
 
@@ -65,7 +56,7 @@ class ClearFunctionTestCase(Thread):
     def __init__(self, process: Popen):
         Thread.__init__(self)
         """
-        Note that this test case is expected to time out.
+        Note that this test case is always expected to time out.
         """
         self.daemon = True
         self.the_data = "/clear"
@@ -96,7 +87,7 @@ class DeletionApprovalTestCase(Thread):
         self.process.stdin.write(self.the_data_bytes + b'\n')
         self.process.stdin.flush()
         self.this_log = "\t" + self.the_data + "\n"
-        for i in range(4):
+        for i in range(3):
             self.this_log += str(self.process.stdout.readline(), errors='ignore')
         self.finished = True
 
