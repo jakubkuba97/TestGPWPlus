@@ -1,0 +1,28 @@
+
+	------------------------------
+	/add
+>>> 
+Wpisz "/back" aby wrocic!
+Liste spolek gpw mozna znalezc na: https://www.gpw.pl/spolki
+Przyklad: "https://www.gpw.pl/spolka?isin=PL11BTS00015"
+\n
+Wklej adres url strony internetowej spolki na gpw.pl: [10112] Failed to execute script main
+Traceback (most recent call last):
+  File "main.py", line 17, in <module>
+  File "FunctionsOnFile.py", line 476, in do_something
+  File "FunctionsOnFile.py", line 252, in add_new_site
+IndexError: string index out of range
+
+
+	------------------------------
+	/add
+>>> 
+Wpisz "/back" aby wrocic!
+Liste spolek gpw mozna znalezc na: https://www.gpw.pl/spolki
+Przyklad: "https://www.gpw.pl/spolka?isin=PL11BTS00015"
+asdf
+Wklej adres url strony internetowej spolki na gpw.pl: Wczytywanie!
+[31mStrona: asdf nie istnieje![0m
+[34mDodano do bazy stron![0m
+
+

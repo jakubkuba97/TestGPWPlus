@@ -39,19 +39,29 @@ class TestSortowaniaSpolekTestCases(unittest.TestCase):
 
     @staticmethod
     def check_if_percentage(lines: str) -> bool:
-        try:
-            lines = lines.replace(">>> ", "")
-            new_lines = lines.split("\n")
-            new_lines[0] = ""
-            index = 6
-            correct_order = [float(str(repr(new_lines[1][new_lines[1].index("Zmiana:") + 14:-index]).replace(",", ".").replace("'", ""))),
-                             float(str(repr(new_lines[2][new_lines[2].index("Zmiana:") + 14:-index]).replace(",", ".").replace("'", ""))),
-                             float(str(repr(new_lines[3][new_lines[3].index("Zmiana:") + 14:-index]).replace(",", ".").replace("'", "")))]
-            old_order = correct_order.copy()
-            correct_order.sort(reverse=True)
-            return old_order == correct_order
-        except (IndexError, ValueError):
-            raise IndexError("Unexpected data type was passed here!")
+        lines = lines.replace(">>> ", "")
+        new_lines = lines.split("\n")
+        new_lines[0] = ""
+        index = 6
+        x1 = str(repr(new_lines[1][new_lines[1].index("Zmiana:") + 13:-index]).replace(",", ".").replace("'", ""))
+        if x1 == "":
+            x1 = str(repr(new_lines[1][new_lines[1].index("Zmiana:") + 14:-index]).replace(",", ".").replace("'", ""))
+            if x1 == "":            # if it's 0, it won't be colored
+                x1 = "0.0"
+        x2 = str(repr(new_lines[2][new_lines[2].index("Zmiana:") + 13:-index]).replace(",", ".").replace("'", ""))
+        if x2 == "":
+            x2 = str(repr(new_lines[2][new_lines[2].index("Zmiana:") + 14:-index]).replace(",", ".").replace("'", ""))
+            if x2 == "":
+                x2 = "0.0"
+        x3 = str(repr(new_lines[3][new_lines[3].index("Zmiana:") + 13:-index]).replace(",", ".").replace("'", ""))
+        if x3 == "":
+            x3 = str(repr(new_lines[3][new_lines[3].index("Zmiana:") + 14:-index]).replace(",", ".").replace("'", ""))
+            if x3 == "":
+                x3 = "0.0"
+        correct_order = [float(x1), float(x2), float(x3)]
+        old_order = correct_order.copy()
+        correct_order.sort(reverse=True)
+        return old_order == correct_order
 
     def test_sortowania_spolek_1_czesc(self):
         self.countdown_function_1.start()

@@ -1,0 +1,13 @@
+
+	------------------------------
+	/add
+>>> 
+Wpisz "/back" aby wrocic!
+Liste spolek gpw mozna znalezc na: https://www.gpw.pl/spolki
+Przyklad: "https://www.gpw.pl/spolka?isin=PL11BTS00015"
+	https://kortle.com/
+Wklej adres url strony internetowej spolki na gpw.pl: Wczytywanie!
+[31mBrak polaczenia z internetem lub blad strony gpw![0m
+[34mDodano do bazy stron![0m
+
+

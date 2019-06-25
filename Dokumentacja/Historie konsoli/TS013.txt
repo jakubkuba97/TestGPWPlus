@@ -1,0 +1,6 @@
+
+	------------------------------
+	/remove-https://www.gpw.pl/spolka?isin=PL11BTS00015
+>>> [34mNie podano poprawnej, unikatowej nazwy spolki / strony spolki do usuniecia![0m
+
+

@@ -1,0 +1,26 @@
+
+	------------------------------
+
+
+[31mNie znaleziono pliku ze stronami![0m
+\/
+Wpisz nowa nazwe pliku ze stronami: [11428] Failed to execute script main
+Traceback (most recent call last):
+  File "FunctionsOnFile.py", line 136, in actualize_invest
+FileNotFoundError: [Errno 2] No such file or directory: 'Strony.txt'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "FunctionsOnFile.py", line 211, in change_sites_file_name
+FileNotFoundError: [Errno 2] No such file or directory: '\\/.txt'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "main.py", line 5, in <module>
+  File "FunctionsOnFile.py", line 26, in __init__
+  File "FunctionsOnFile.py", line 148, in actualize_invest
+  File "FunctionsOnFile.py", line 217, in change_sites_file_name
+FileNotFoundError: [Errno 2] No such file or directory: '\\/.txt'
+

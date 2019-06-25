@@ -1,0 +1,39 @@
+->TestGPWPlus
+	|
+	->README.md
+	|
+	->Wymagania.txt
+	|
+	->Mapa projektu.txt
+	|
+	->Dokumentacja
+		|
+		->Historie konsoli
+			|
+			->.Miejsce na historie konsoli.txt
+		|
+		->Podstawa testow
+			|
+			->Specyfikacja wymagan GPWPlus.docx
+		|
+		->Przedmiot testow
+			|
+			->GPWPlus.exe
+			|
+			->Settings.txt
+		|
+		->Plan testow.docx
+		|
+		->Scenariusz testowy.docx
+	|
+	->Testy
+		|
+		->Test*NazwaTestu*.py
+		|
+		->Function*NazwaSkryptu*
+			|
+			->__init__.py
+		|
+		->Tymczasowe historie
+			|
+			->.Miejsce na tymczasowe historie konsoli.txt
