@@ -1,5 +1,9 @@
 # TEST GPWPlus
 
+Dany projekt sporządzony jest na potrzeby własne i służy do sprawdzenia i udowodnienia wiedzy o testowaniu i pracy w środowiskach testowania automatycznego.
+
+# Setup
+
 Caly projekt zapisany jest jako projekt języka programowania python,
 plik "Wymagania" okresla wszystkie frameworks niezbedne do poprawnego dzialania,
 mozna je latwo zainstalowac uzywajac komendy w konsoli przy uzyciu PIP: pip install -r Wymagania.txt.
