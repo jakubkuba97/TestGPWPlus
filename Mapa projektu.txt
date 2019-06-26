@@ -22,6 +22,8 @@
 			|
 			->Settings.txt
 		|
+		->Matryca bledow.xlsx
+		|
 		->Plan testow.docx
 		|
 		->Scenariusz testowy.docx
