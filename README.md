@@ -1,8 +1,8 @@
 # TEST GPWPlus
 
-Dany projekt sporządzony jest na potrzeby własne i służy do sprawdzenia i udowodnienia wiedzy o testowaniu i pracy w środowiskach testowania automatycznego.
+Dany projekt sporządzony jest na potrzeby własne i służy do sprawdzenia i utrwalenia wiedzy o testowaniu i pracy w środowiskach testowania automatycznego.
 
-# Setup
+# Setup do wykonania testów
 
 Caly projekt zapisany jest jako projekt języka programowania python,
 plik "Wymagania" okresla wszystkie frameworks niezbedne do poprawnego dzialania,
