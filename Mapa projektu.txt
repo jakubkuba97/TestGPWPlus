@@ -26,6 +26,8 @@
 		|
 		->Plan testow.docx
 		|
+		->Raport koncowy.docx
+		|
 		->Scenariusz testowy.docx
 	|
 	->Testy
